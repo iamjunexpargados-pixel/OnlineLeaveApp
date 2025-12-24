@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAMPCO | Leave Application Portal</title>
+
+<style>
+:root {
+  --primary:#1e3a8a;
+  --secondary:#0ea5e9;
+  --accent:#22c55e;
+  --bg:#f1f5f9;
+  --text:#0f172a;
+}
+
+body {
+  margin:0;
+  padding:20px;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+.container {
+  max-width:460px;
+  margin:auto;
+  background:#fff;
+  border-radius:14px;
+  padding:25px;
+  box-shadow:0 12px 30px rgba(0,0,0,.15);
+}
+
+.header {
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.header h1 {
+  font-size:20px;
+  margin:0;
+  color:var(--primary);
+  font-weight:800;
+}
+
+.header h3 {
+  margin:2px 0 8px;
+  font-size:13px;
+  color:#64748b;
+}
+
+.header h2 {
+  font-size:18px;
+  margin:8px 0 4px;
+}
+
+.header p {
+  font-size:13px;
+  color:#64748b;
+}
+
+label {
+  font-weight:bold;
+  font-size:14px;
+  color:var(--text);
+}
+
+input, select, textarea, button {
+  width:100%;
+  padding:12px;
+  margin-top:5px;
+  margin-bottom:15px;
+  border-radius:8px;
+  border:1px solid #cbd5e1;
+  font-size:15px;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline:none;
+  border-color:var(--secondary);
+}
+
+textarea { resize:none; }
+
+button {
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:white;
+  border:none;
+  font-size:17px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+button:hover { opacity:.95; }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <h1>LAAK MULTIPURPOSE COOPERATIVE</h1>
+    <h3>(LAMPCO)</h3>
+    <h2>Leave Application</h2>
+    <p>Employee Self-Service Portal</p>
+  </div>
+
+  <form id="leaveForm">
+
+    <label>Employee ID</label>
+    <input type="text" id="empId" required>
+
+    <label>Full Name</label>
+    <input type="text" id="name" required>
+
+    <label>Branch</label>
+    <select id="branch" required>
+      <option value="">Select Branch</option>
+      <option>Aguinaldo</option>
+      <option>Head Office</option>
+      <option>Kilagding</option>
+      <option>Kidawa</option>
+      <option>Laak</option>
+      <option>Langtud</option>
+      <option>Mangloy</option>
+      <option>Pagwas</option>
+      <option>Sawata</option>
+    </select>
+
+    <label>Leave Type</label>
+    <select id="leaveType" required>
+      <option value="">Select Leave</option>
+      <option>Vacation Leave</option>
+      <option>Sick Leave</option>
+      <option>Emergency Leave</option>
+      <option>Paternity Leave</option>
+      <option>Maternity Leave</option>
+    </select>
+
+    <label>No. of Days Requested</label>
+    <input type="number" id="days" min="0.5" step="0.5" placeholder="e.g. 1, 2, 0.5" required>
+
+    <label>Start Date</label>
+    <input type="date" id="start" required>
+
+    <label>End Date</label>
+    <input type="date" id="end" required>
+
+    <label>Reason</label>
+    <textarea id="reason" rows="3" required></textarea>
+
+    <button type="submit">Submit Leave Request</button>
+
+  </form>
+</div>
+
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbxtNLKkBmmsMts8rOQ8dD0Q-okexI7EtUEXlhIAg0tSw6D3e6zE1dHlXX3tRLR8iVYfcQ/exec";
+
+document.getElementById("leaveForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const data = {
+    empId: empId.value.trim(),
+    name: name.value.trim(),
+    branch: branch.value,
+    leaveType: leaveType.value,
+    days: days.value,
+    start: start.value,
+    end: end.value,
+    reason: reason.value.trim()
+  };
+
+  fetch(scriptURL, {
+    method:"POST",
+    body:JSON.stringify(data),
+    headers:{ "Content-Type":"application/json" }
+  })
+  .then(res => res.json())
+  .then(() => {
+    alert("✅ Leave request submitted successfully.");
+    leaveForm.reset();
+  })
+  .catch(() => {
+    alert("⚠️ Submission failed. Please try again.");
+  });
+});
+</script>
+
+</body>
+</html>
